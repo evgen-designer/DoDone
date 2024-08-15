@@ -19,7 +19,6 @@
 		04CA57052C6DD6610069DFF5 /* CheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CA57042C6DD6610069DFF5 /* CheckBoxView.swift */; };
 		04CA57072C6DD68F0069DFF5 /* DateHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CA57062C6DD68F0069DFF5 /* DateHolder.swift */; };
 		04CA570A2C6DD7240069DFF5 /* TaskItemExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CA57092C6DD7240069DFF5 /* TaskItemExtension.swift */; };
-		04CA570C2C6DD74A0069DFF5 /* TaskFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CA570B2C6DD74A0069DFF5 /* TaskFilter.swift */; };
 		04EE92802C6DDE0C007C3FF4 /* WeeklyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EE927F2C6DDE0C007C3FF4 /* WeeklyCalendarView.swift */; };
 		04EE92822C6DE49A007C3FF4 /* DateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EE92812C6DE49A007C3FF4 /* DateButton.swift */; };
 /* End PBXBuildFile section */
@@ -38,7 +37,6 @@
 		04CA57042C6DD6610069DFF5 /* CheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxView.swift; sourceTree = "<group>"; };
 		04CA57062C6DD68F0069DFF5 /* DateHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHolder.swift; sourceTree = "<group>"; };
 		04CA57092C6DD7240069DFF5 /* TaskItemExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItemExtension.swift; sourceTree = "<group>"; };
-		04CA570B2C6DD74A0069DFF5 /* TaskFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskFilter.swift; sourceTree = "<group>"; };
 		04EE927F2C6DDE0C007C3FF4 /* WeeklyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCalendarView.swift; sourceTree = "<group>"; };
 		04EE92812C6DE49A007C3FF4 /* DateButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -111,7 +109,6 @@
 				04CA57062C6DD68F0069DFF5 /* DateHolder.swift */,
 				04CA56EF2C6BFE4B0069DFF5 /* Persistence.swift */,
 				04CA57092C6DD7240069DFF5 /* TaskItemExtension.swift */,
-				04CA570B2C6DD74A0069DFF5 /* TaskFilter.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -192,7 +189,6 @@
 				04CA57052C6DD6610069DFF5 /* CheckBoxView.swift in Sources */,
 				04CA57012C6DD6240069DFF5 /* TaskEditView.swift in Sources */,
 				04EE92802C6DDE0C007C3FF4 /* WeeklyCalendarView.swift in Sources */,
-				04CA570C2C6DD74A0069DFF5 /* TaskFilter.swift in Sources */,
 				04CA56F02C6BFE4B0069DFF5 /* Persistence.swift in Sources */,
 				04CA56FF2C6DD6040069DFF5 /* FloatingButton.swift in Sources */,
 				04CA56FA2C6DD57B0069DFF5 /* TaskListView.swift in Sources */,
