@@ -18,8 +18,8 @@ struct FloatingButton: View {
                 Spacer()
                 
                 NavigationLink(destination: TaskEditView(passedTaskItem: nil, initialDate: dateHolder.date).environmentObject(dateHolder)) {
-                    Text("+ New task")
-                        .font(.headline)
+                    Image(systemName: "plus")
+                        .font(.title2)
                 }
                 .padding(15)
                 .foregroundColor(.white)
