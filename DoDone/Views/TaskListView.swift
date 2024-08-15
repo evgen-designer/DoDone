@@ -17,7 +17,7 @@ struct TaskListView: View {
     var body: some View {
         NavigationView {
             VStack {
-                DateScroller()
+                WeeklyCalendarView()
                     .padding()
                     .environmentObject(dateHolder)
                 
