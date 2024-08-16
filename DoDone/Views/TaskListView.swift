@@ -46,9 +46,16 @@ struct TaskListView: View {
                         .environmentObject(dateHolder)
                 }
             }
-            .navigationTitle("Todo list")
+            .navigationTitle(formattedMonthTitle())
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
+    
+    private func formattedMonthTitle() -> String {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMMM yyyy"
+            return dateFormatter.string(from: dateHolder.date)
+        }
     
     private func todoTasks() -> [TaskItem] {
         dateHolder.taskItems.filter { !$0.isCompleted() }

@@ -20,8 +20,9 @@ class DateHolder: ObservableObject {
     }
     
     init(_ context: NSManagedObjectContext) {
-        refreshTaskItems(context)
-    }
+            self.date = Date()
+            refreshTaskItems(context)
+        }
     
     func refreshTaskItems(_ context: NSManagedObjectContext) {
         taskItems = fetchTaskItems(context)
