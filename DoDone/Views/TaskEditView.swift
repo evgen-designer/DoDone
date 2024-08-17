@@ -68,9 +68,9 @@ struct TaskEditView: View {
         withAnimation {
             if selectedTaskItem == nil {
                 selectedTaskItem = TaskItem(context: viewContext)
+                selectedTaskItem?.created = Date()
             }
             
-            selectedTaskItem?.created = Date()
             selectedTaskItem?.name = name
             selectedTaskItem?.dueDate = dueDate
             selectedTaskItem?.scheduleTime = scheduleTime

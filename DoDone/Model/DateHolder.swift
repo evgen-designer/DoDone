@@ -9,20 +9,20 @@ import SwiftUI
 import CoreData
 
 class DateHolder: ObservableObject {
-    @Published var date = Date()
+    @Published var date: Date
     @Published var taskItems: [TaskItem] = []
     
     let calendar: Calendar = Calendar.current
+    
+    init(_ context: NSManagedObjectContext) {
+        self.date = Date()
+        refreshTaskItems(context)
+    }
     
     func moveDate(_ days: Int,_ context: NSManagedObjectContext) {
         date = calendar.date(byAdding: .day, value: days, to: date)!
         refreshTaskItems(context)
     }
-    
-    init(_ context: NSManagedObjectContext) {
-            self.date = Date()
-            refreshTaskItems(context)
-        }
     
     func refreshTaskItems(_ context: NSManagedObjectContext) {
         taskItems = fetchTaskItems(context)
@@ -31,8 +31,7 @@ class DateHolder: ObservableObject {
     func fetchTaskItems(_ context: NSManagedObjectContext) -> [TaskItem] {
         do {
             return try context.fetch(dailyTasksFetch()) as [TaskItem]
-        }
-        catch let error {
+        } catch let error {
             fatalError("Unresolved error \(error)")
         }
     }
@@ -45,10 +44,12 @@ class DateHolder: ObservableObject {
     }
     
     private func sortOrder() -> [NSSortDescriptor] {
+        let creationDateSort = NSSortDescriptor(keyPath: \TaskItem.created, ascending: false)
         let completedDateSort = NSSortDescriptor(keyPath: \TaskItem.completedDate, ascending: true)
         let timeSort = NSSortDescriptor(keyPath: \TaskItem.scheduleTime, ascending: true)
         let dueDateSort = NSSortDescriptor(keyPath: \TaskItem.dueDate, ascending: true)
-        return [completedDateSort, timeSort, dueDateSort]
+        
+        return [creationDateSort, completedDateSort, timeSort, dueDateSort]
     }
     
     private func predicate() -> NSPredicate {
