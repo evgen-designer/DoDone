@@ -74,8 +74,9 @@ struct TaskEditView: View {
             selectedTaskItem?.name = name
             selectedTaskItem?.dueDate = dueDate
             selectedTaskItem?.scheduleTime = scheduleTime
-            
             dateHolder.saveContext(viewContext)
+            dateHolder.refreshTaskItems(viewContext)
+            
             self.presentationMode.wrappedValue.dismiss()
         }
     }

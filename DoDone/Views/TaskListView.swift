@@ -11,6 +11,7 @@ import CoreData
 struct TaskListView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var dateHolder: DateHolder
+    @State var editingList = false
     
     var body: some View {
         NavigationView {
@@ -18,7 +19,7 @@ struct TaskListView: View {
                 WeeklyCalendarView()
                     .padding()
                     .environmentObject(dateHolder)
-
+                
                 ZStack {
                     List {
                         Section(header: Text("To do")) {
@@ -29,7 +30,16 @@ struct TaskListView: View {
                                 }
                             }
                             .onDelete(perform: deleteItems)
+                            .onMove(perform: { indices, newOffset in
+                                moveTask(from: indices, to: newOffset, in: 0)
+                            })
+                            .onLongPressGesture {
+                                withAnimation {
+                                    self.editingList = true
+                                }
+                            }
                         }
+                        .environment(\.editMode, editingList ? .constant(.active) : .constant(.inactive))
                         
                         Section(header: Text("Completed")) {
                             ForEach(completedTasks()) { taskItem in
@@ -39,7 +49,16 @@ struct TaskListView: View {
                                 }
                             }
                             .onDelete(perform: deleteItems)
+                            .onMove(perform: { indices, newOffset in
+                                moveTask(from: indices, to: newOffset, in: 1)
+                            })
+                            .onLongPressGesture {
+                                withAnimation {
+                                    self.editingList = true
+                                }
+                            }
                         }
+                        .environment(\.editMode, editingList ? .constant(.active) : .constant(.inactive))
                     }
                     
                     FloatingButton()
@@ -51,19 +70,43 @@ struct TaskListView: View {
         }
     }
     
-    private func formattedMonthTitle() -> String {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMMM yyyy"
-            return dateFormatter.string(from: dateHolder.date)
+    private func moveTask(from source: IndexSet, to destination: Int, in section: Int) {
+        // Determine the tasks to reorder based on the section
+        var tasksToReorder: [TaskItem] = section == 0 ? todoTasks() : completedTasks()
+        
+        // Perform the reordering
+        tasksToReorder.move(fromOffsets: source, toOffset: destination)
+        
+        // Update the order for each task
+        for (index, task) in tasksToReorder.enumerated() {
+            task.order = Int16(index)
         }
+        
+        withAnimation {
+            self.editingList = false
+        }
+        
+        // Save the context
+        dateHolder.saveContext(viewContext)
+        
+        // Refresh the task items to ensure the UI updates correctly
+        dateHolder.refreshTaskItems(viewContext)
+    }
+    
+    private func formattedMonthTitle() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM yyyy"
+        return dateFormatter.string(from: dateHolder.date)
+    }
     
     private func todoTasks() -> [TaskItem] {
-        dateHolder.taskItems.filter { !$0.isCompleted() }
+        return dateHolder.taskItems.filter { !$0.isCompleted() }.sorted(by: { $0.order < $1.order })
     }
     
     private func completedTasks() -> [TaskItem] {
-        dateHolder.taskItems.filter { $0.isCompleted() }
+        return dateHolder.taskItems.filter { $0.isCompleted() }.sorted(by: { $0.order < $1.order })
     }
+    
     
     private func deleteItems(offsets: IndexSet) {
         withAnimation {

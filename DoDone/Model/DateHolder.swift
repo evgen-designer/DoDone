@@ -30,11 +30,14 @@ class DateHolder: ObservableObject {
     
     func fetchTaskItems(_ context: NSManagedObjectContext) -> [TaskItem] {
         do {
-            return try context.fetch(dailyTasksFetch()) as [TaskItem]
+            let request = dailyTasksFetch()
+            request.sortDescriptors = [NSSortDescriptor(keyPath: \TaskItem.order, ascending: true)]
+            return try context.fetch(request)
         } catch let error {
             fatalError("Unresolved error \(error)")
         }
     }
+
     
     func dailyTasksFetch() -> NSFetchRequest<TaskItem> {
         let request = TaskItem.fetchRequest()
@@ -48,8 +51,9 @@ class DateHolder: ObservableObject {
         let completedDateSort = NSSortDescriptor(keyPath: \TaskItem.completedDate, ascending: true)
         let timeSort = NSSortDescriptor(keyPath: \TaskItem.scheduleTime, ascending: true)
         let dueDateSort = NSSortDescriptor(keyPath: \TaskItem.dueDate, ascending: true)
+        let orderSort = NSSortDescriptor(keyPath: \TaskItem.order, ascending: true)
         
-        return [creationDateSort, completedDateSort, timeSort, dueDateSort]
+        return [creationDateSort, completedDateSort, timeSort, dueDateSort, orderSort]
     }
     
     private func predicate() -> NSPredicate {
