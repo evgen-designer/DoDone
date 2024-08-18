@@ -20,9 +20,23 @@ struct CheckBoxView: View {
                     if passedTaskItem.isCompleted() {
                         // Mark the task as incomplete (move it back to "To do")
                         passedTaskItem.completedDate = nil
+                        passedTaskItem.order = 0
+                        
+                        // Reorder existing incomplete tasks
+                        let incompleteTasks = dateHolder.taskItems.filter { !$0.isCompleted() && $0 != passedTaskItem }
+                        for (index, task) in incompleteTasks.enumerated() {
+                            task.order = Int16(index + 1)
+                        }
                     } else {
                         // Mark the task as complete
                         passedTaskItem.completedDate = Date()
+                        passedTaskItem.order = 0
+                        
+                        // Reorder existing complete tasks
+                        let completeTasks = dateHolder.taskItems.filter { $0.isCompleted() && $0 != passedTaskItem }
+                        for (index, task) in completeTasks.enumerated() {
+                            task.order = Int16(index + 1)
+                        }
                     }
                     
                     // Save the context and refresh the task items

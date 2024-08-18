@@ -69,11 +69,20 @@ struct TaskEditView: View {
             if selectedTaskItem == nil {
                 selectedTaskItem = TaskItem(context: viewContext)
                 selectedTaskItem?.created = Date()
+                selectedTaskItem?.order = 0
+                
+                // Reorder existing tasks
+                let existingTasks = dateHolder.taskItems.filter { !$0.isCompleted() }
+                for (index, task) in existingTasks.enumerated() {
+                    task.order = Int16(index + 1)
+                }
             }
             
             selectedTaskItem?.name = name
+            selectedTaskItem?.desc = desc
             selectedTaskItem?.dueDate = dueDate
             selectedTaskItem?.scheduleTime = scheduleTime
+            
             dateHolder.saveContext(viewContext)
             dateHolder.refreshTaskItems(viewContext)
             

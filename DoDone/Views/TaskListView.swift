@@ -100,13 +100,22 @@ struct TaskListView: View {
     }
     
     private func todoTasks() -> [TaskItem] {
-        return dateHolder.taskItems.filter { !$0.isCompleted() }.sorted(by: { $0.order < $1.order })
+        return dateHolder.taskItems.filter { !$0.isCompleted() }.sorted {
+            if $0.created == $1.created {
+                return $0.order < $1.order
+            }
+            return $0.created! > $1.created!
+        }
     }
-    
+
     private func completedTasks() -> [TaskItem] {
-        return dateHolder.taskItems.filter { $0.isCompleted() }.sorted(by: { $0.order < $1.order })
+        return dateHolder.taskItems.filter { $0.isCompleted() }.sorted {
+            if $0.completedDate == $1.completedDate {
+                return $0.order < $1.order
+            }
+            return $0.completedDate! > $1.completedDate!
+        }
     }
-    
     
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
