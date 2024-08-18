@@ -17,10 +17,17 @@ struct CheckBoxView: View {
             .foregroundColor(passedTaskItem.isCompleted() ? .green : .secondary)
             .onTapGesture {
                 withAnimation {
-                    if !passedTaskItem.isCompleted() {
+                    if passedTaskItem.isCompleted() {
+                        // Mark the task as incomplete (move it back to "To do")
+                        passedTaskItem.completedDate = nil
+                    } else {
+                        // Mark the task as complete
                         passedTaskItem.completedDate = Date()
-                        dateHolder.saveContext(viewContext)
                     }
+                    
+                    // Save the context and refresh the task items
+                    dateHolder.saveContext(viewContext)
+                    dateHolder.refreshTaskItems(viewContext)
                 }
             }
     }
