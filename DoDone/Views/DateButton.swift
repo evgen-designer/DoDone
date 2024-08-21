@@ -17,11 +17,13 @@ struct DateButton: View {
         Button(action: action) {
             VStack {
                 Text(date, format: .dateTime.weekday(.abbreviated))
-                    .font(.caption)
+//                    .font(.caption)
+                    .font(.system(size: 9))
                 Text(date, format: .dateTime.day())
-                    .font(.title3.bold())
+//                    .font(.title3.bold())
+                    .font(.system(size: 15, weight: .bold))
             }
-            .padding(8)
+            .padding(7)
             .background(backgroundColor)
             .foregroundColor(isSelected ? .white : .primary)
             .clipShape(RoundedRectangle(cornerRadius: 8))

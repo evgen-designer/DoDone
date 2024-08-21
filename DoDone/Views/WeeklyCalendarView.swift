@@ -17,7 +17,7 @@ struct WeeklyCalendarView: View {
     
     var body: some View {
         VStack {
-            LazyVGrid(columns: columns, spacing: 10) {
+            LazyVGrid(columns: columns, spacing: 8) {
                 ForEach(daysOfTheWeek(), id: \.self) { date in
                     DateButton(date: date, isSelected: isSelected(date), isToday: isToday(date)) {
                         selectedDate = date
