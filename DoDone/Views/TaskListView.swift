@@ -11,65 +11,76 @@ import CoreData
 struct TaskListView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var dateHolder: DateHolder
-    @State var editingList = false
-    
+    @State private var editingList = false
+
     var body: some View {
         NavigationView {
-            VStack {
-                WeeklyCalendarView()
-                    .padding()
-                    .environmentObject(dateHolder)
-                
-                ZStack {
-                    List {
-                        Section(header: Text("To do")) {
-                            ForEach(todoTasks()) { taskItem in
-                                NavigationLink(destination: TaskEditView(passedTaskItem: taskItem, initialDate: taskItem.dueDate!).environmentObject(dateHolder)) {
-                                    TaskCell(passedTaskItem: taskItem)
-                                        .environmentObject(dateHolder)
-                                }
-                            }
-                            .onDelete(perform: deleteItems)
-                            .onMove(perform: { indices, newOffset in
-                                moveTask(from: indices, to: newOffset, in: 0)
-                            })
-                            .onLongPressGesture {
-                                withAnimation {
-                                    self.editingList = true
-                                }
-                            }
-                        }
-                        .environment(\.editMode, editingList ? .constant(.active) : .constant(.inactive))
-                        
-                        Section(header: Text("Completed")) {
-                            ForEach(completedTasks()) { taskItem in
-                                NavigationLink(destination: TaskEditView(passedTaskItem: taskItem, initialDate: taskItem.dueDate!).environmentObject(dateHolder)) {
-                                    TaskCell(passedTaskItem: taskItem)
-                                        .environmentObject(dateHolder)
-                                }
-                            }
-                            .onDelete(perform: deleteItems)
-                            .onMove(perform: { indices, newOffset in
-                                moveTask(from: indices, to: newOffset, in: 1)
-                            })
-                            .onLongPressGesture {
-                                withAnimation {
-                                    self.editingList = true
-                                }
-                            }
-                        }
-                        .environment(\.editMode, editingList ? .constant(.active) : .constant(.inactive))
-                    }
-                    
-                    FloatingButton()
+            ZStack {
+                VStack {
+                    WeeklyCalendarView()
+                        .padding()
                         .environmentObject(dateHolder)
+
+                    if todoTasks().isEmpty && completedTasks().isEmpty {
+                        
+                        EmptyDayView()
+                        
+                    } else {
+                        List {
+                            if !todoTasks().isEmpty {
+                                Section(header: Text("To do")) {
+                                    ForEach(todoTasks()) { taskItem in
+                                        NavigationLink(destination: TaskEditView(passedTaskItem: taskItem, initialDate: taskItem.dueDate!).environmentObject(dateHolder)) {
+                                            TaskCell(passedTaskItem: taskItem)
+                                                .environmentObject(dateHolder)
+                                        }
+                                    }
+                                    .onDelete(perform: deleteItems)
+                                    .onMove(perform: { indices, newOffset in
+                                        moveTask(from: indices, to: newOffset, in: 0)
+                                    })
+                                    .onLongPressGesture {
+                                        withAnimation {
+                                            self.editingList = true
+                                        }
+                                    }
+                                }
+                                .environment(\.editMode, editingList ? .constant(.active) : .constant(.inactive))
+                            }
+
+                            if !completedTasks().isEmpty {
+                                Section(header: Text("Completed")) {
+                                    ForEach(completedTasks()) { taskItem in
+                                        NavigationLink(destination: TaskEditView(passedTaskItem: taskItem, initialDate: taskItem.dueDate!).environmentObject(dateHolder)) {
+                                            TaskCell(passedTaskItem: taskItem)
+                                                .environmentObject(dateHolder)
+                                        }
+                                    }
+                                    .onDelete(perform: deleteItems)
+                                    .onMove(perform: { indices, newOffset in
+                                        moveTask(from: indices, to: newOffset, in: 1)
+                                    })
+                                    .onLongPressGesture {
+                                        withAnimation {
+                                            self.editingList = true
+                                        }
+                                    }
+                                }
+                                .environment(\.editMode, editingList ? .constant(.active) : .constant(.inactive))
+                            }
+                        }
+                        .listStyle(InsetGroupedListStyle())
+                    }
                 }
+
+                FloatingButton()
+                    .environmentObject(dateHolder)
             }
             .navigationTitle(formattedMonthTitle())
             .navigationBarTitleDisplayMode(.inline)
         }
     }
-    
+
     private func moveTask(from source: IndexSet, to destination: Int, in section: Int) {
         // Determine the tasks to reorder based on the section
         var tasksToReorder: [TaskItem] = section == 0 ? todoTasks() : completedTasks()
@@ -92,13 +103,13 @@ struct TaskListView: View {
         // Refresh the task items to ensure the UI updates correctly
         dateHolder.refreshTaskItems(viewContext)
     }
-    
+
     private func formattedMonthTitle() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM yyyy"
         return dateFormatter.string(from: dateHolder.date)
     }
-    
+
     private func todoTasks() -> [TaskItem] {
         return dateHolder.taskItems.filter { !$0.isCompleted() }.sorted {
             if $0.created == $1.created {
@@ -116,11 +127,13 @@ struct TaskListView: View {
             return $0.completedDate! > $1.completedDate!
         }
     }
-    
+
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
-            offsets.map { todoTasks()[$0] }.forEach(viewContext.delete)
-            offsets.map { completedTasks()[$0] }.forEach(viewContext.delete)
+            offsets.forEach { index in
+                let taskToDelete = todoTasks().count > index ? todoTasks()[index] : completedTasks()[index - todoTasks().count]
+                viewContext.delete(taskToDelete)
+            }
             
             dateHolder.saveContext(viewContext)
         }
@@ -138,4 +151,5 @@ private let itemFormatter: DateFormatter = {
     TaskListView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(DateHolder(PersistenceController.preview.container.viewContext))
+        .preferredColorScheme(.dark)
 }

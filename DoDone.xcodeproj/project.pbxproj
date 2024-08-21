@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04B6BC5E2C7352E7009799E3 /* EmptyDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B6BC5D2C7352E7009799E3 /* EmptyDayView.swift */; };
 		04CA56E72C6BFE490069DFF5 /* DoDoneApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CA56E62C6BFE490069DFF5 /* DoDoneApp.swift */; };
 		04CA56EB2C6BFE4B0069DFF5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04CA56EA2C6BFE4B0069DFF5 /* Assets.xcassets */; };
 		04CA56EE2C6BFE4B0069DFF5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04CA56ED2C6BFE4B0069DFF5 /* Preview Assets.xcassets */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04B6BC5D2C7352E7009799E3 /* EmptyDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyDayView.swift; sourceTree = "<group>"; };
 		04CA56E32C6BFE490069DFF5 /* DoDone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoDone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04CA56E62C6BFE490069DFF5 /* DoDoneApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoDoneApp.swift; sourceTree = "<group>"; };
 		04CA56EA2C6BFE4B0069DFF5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				04CA56F92C6DD57B0069DFF5 /* TaskListView.swift */,
+				04B6BC5D2C7352E7009799E3 /* EmptyDayView.swift */,
 				04EE927F2C6DDE0C007C3FF4 /* WeeklyCalendarView.swift */,
 				04EE92812C6DE49A007C3FF4 /* DateButton.swift */,
 				04CA56FE2C6DD6040069DFF5 /* FloatingButton.swift */,
@@ -189,6 +192,7 @@
 				04CA57052C6DD6610069DFF5 /* CheckBoxView.swift in Sources */,
 				04CA57012C6DD6240069DFF5 /* TaskEditView.swift in Sources */,
 				04EE92802C6DDE0C007C3FF4 /* WeeklyCalendarView.swift in Sources */,
+				04B6BC5E2C7352E7009799E3 /* EmptyDayView.swift in Sources */,
 				04CA56F02C6BFE4B0069DFF5 /* Persistence.swift in Sources */,
 				04CA56FF2C6DD6040069DFF5 /* FloatingButton.swift in Sources */,
 				04CA56FA2C6DD57B0069DFF5 /* TaskListView.swift in Sources */,
